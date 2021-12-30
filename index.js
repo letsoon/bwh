@@ -5,32 +5,34 @@ const { argv } = process;
 const API_KEY = argv[2].replace('--apiKey=', '');
 const VEID = argv[3].replace('--veId=', '');
 const PUSH_KEY = argv[4].replace('--pushKey=', '');
+const channel = '9';
 
-const domain = `https://api.64clouds.com/v1/getServiceInfo?veid=${VEID}&api_key=${API_KEY}`;
-console.log(domain);
+const domain = `https://api.64clouds.com/v1/getServiceInfo`;
 
-exec(`curl ${domain}`, (error, std, stderr) => {
-    if (error) {
-        throw `exec error: ${error}`;
-    }
+exec(`curl -d "api_key=${API_KEY}&veid=${VEID}" ${domain}`, (error, std) => {
+    let desp = "";
     const res = JSON.parse(std);
-    if (res.error !== 0) {
-        console.log(res);
-        throw `请求错误`;
-    }
     const today = new Date().toLocaleString('zh-CN');
     const data = res.plan_monthly_data / 1024 / 1024 / 1024 * res.monthly_data_multiplier;
     const usage = res.data_counter / 1024 / 1024 / 1024 * res.monthly_data_multiplier;
     const reset = data - usage;
+
     const title = encodeURIComponent('流量日志');
-    const content = `
-      ### ${today}
-      - 总量：${usage}GB
-      - 已用：${usage}GB
-      - 可用：${reset}GB
-      `
-    const domain2 = `https://sctapi.ftqq.com/${PUSH_KEY}.send?title=${title}&desp=${content}`
-    exec(`curl ${domain2}`, (error, std, stderr) => {
+   
+    if (error) {
+        desp = error;
+    }else if (res.error !== 0) {
+        desp = encodeURIComponent(`${JSON.stringify(res)}`);
+    }else{
+        desp = encodeURIComponent(`
+        ### ${today}
+        - 总量：${data}GB
+        - 已用：${usage}GB
+        - 可用：${reset}GB`
+        );
+    }
+    const domain2 = `https://sctapi.ftqq.com/${PUSH_KEY}.send`
+    exec(`curl -d "title=${title}&desp=${desp}&channel=${channel}" ${domain2}`, (error) => {
         if (error) {
             throw `exec error: ${error}`;
         }
