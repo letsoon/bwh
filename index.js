@@ -3,9 +3,9 @@ const process = require('process');
 const { argv } = process;
 
 console.log(argv);
-const API_KEY = argv[2].replace('--apiKey','');
-const VEID = argv[3].replace('--veid','');
-const PUSH_KEY = argv[4].replace('--pushKey','');
+const API_KEY = argv[2].replace('--apiKey=','');
+const VEID = argv[3].replace('--veId=','');
+const PUSH_KEY = argv[4].replace('--pushKey=','');
 
 const domain = `https://api.64clouds.com/v1/getUsageGraphs?veid=${VEID}&api_key=${API_KEY}`;
 
