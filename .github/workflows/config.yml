@@ -24,4 +24,4 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.0
       - name: run
-        run: node index.js --apiKey=${{secrets.API_KEY}} --veId=${{secrets.VEID}}
+        run: node index.js --apiKey=${{secrets.API_KEY}} --veId=${{secrets.VEID}} --pushKey=${{secrets.PUSH_KEY}}
