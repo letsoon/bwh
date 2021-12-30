@@ -7,7 +7,7 @@ const API_KEY = argv[2].replace('--apiKey=','');
 const VEID = argv[3].replace('--veId=','');
 const PUSH_KEY = argv[4].replace('--pushKey=','');
 
-const domain = `https://api.64clouds.com/v1/getUsageGraphs?veid=${VEID}&api_key=${API_KEY}`;
+const domain = `https://api.64clouds.com/v1/getServiceInfo?veid=${VEID}&api_key=${API_KEY}`;
 
     exec(`curl ${domain}`,(error,std,stderr)=>{
       if (error) {
@@ -30,7 +30,7 @@ const domain = `https://api.64clouds.com/v1/getUsageGraphs?veid=${VEID}&api_key=
       - 可用：${reset}GB
       `
       const domain2 = `https://sctapi.ftqq.com/${PUSH_KEY}.send?title=${title}&desp=${content}`
-      exec(`curl ${domain}`,(error,std,stderr)=>{
+      exec(`curl ${domain2}`,(error,std,stderr)=>{
         if (error) {
           throw `exec error: ${error}`;
         }
